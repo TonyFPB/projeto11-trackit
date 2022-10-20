@@ -18,6 +18,9 @@ export const StyledFormsSign = styled.form`
     }
     
     button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-family: 'Lexend Deca', sans-serif;
         font-size: 21px;
         width: 303px;
