@@ -33,11 +33,12 @@ export const StyledFormsSign = styled.form`
 `
 
 export const StyledSign= styled.div`
+    background-color: #FFFF;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 70px 0 0 0; /* 200px */
 
     img{
         width: 180px;

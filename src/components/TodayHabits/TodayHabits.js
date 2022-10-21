@@ -1,6 +1,7 @@
 import styled from "styled-components"
+import Footer from "../Footer/Footer";
 import Header from "../Header/Header"
-import { IoIosCheckbox, IoIosCheckboxOutline } from "react-icons/io";
+import Habit from "./Habit";
 
 export default function TodayHabits() {
     return (
@@ -11,25 +12,25 @@ export default function TodayHabits() {
                 <p>Nenhum hábito concluído ainda</p>
             </DayInfo>
             <ul>
-                <li>
-                    <div>
-
-                        <h2>habito</h2>
-                        <p>seq atual</p>
-                        <p>recorde</p>
-                    </div>
-                    <IoIosCheckbox size={"100px"} color={"#8FC549"}/>
-                    {/* <IoIosCheckboxOutline /> */}
-                </li>
+                <Habit />
+                <Habit />
+                <Habit/>
+                <Habit/>
+                <Habit/>
+                <Habit/>
+                <Habit/>
+                <Habit/>
+                <Habit/>
             </ul>
+            <Footer />
         </StyledTodayHabits>
     )
 }
 
 const StyledTodayHabits = styled.div`
-    margin: 70px 0;
+    height: 100%;
+    margin: 70px 0 70px 0;
     padding: 0 20px;
-    background-color: #E5E5E5;;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
