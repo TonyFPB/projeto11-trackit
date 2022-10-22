@@ -1,15 +1,27 @@
 import styled from "styled-components"
-import CreateWeekDays from "./CreateWeekDays"
+import { StyledDay, StyledWeekDays } from "./CreateWeekDays"
 import { BsTrash } from "react-icons/bs"
+import useProviders from "../../Providers"
+import axios from "axios"
 
-export default function CreatedHabit() {
+export default function CreatedHabit({habit,deleteHabit}) {
+    const {id,name,days} = habit
+    
     return (
         <StyledCreatedHabit>
             <div>
-                <h1>Ler 1 capítulo de livro</h1>
-                <BsTrash />
+                <h1>{name}</h1>
+                <BsTrash onClick={()=>deleteHabit(id)}/>
             </div>
-            <CreateWeekDays />
+            <StyledWeekDays>
+                <StyledDay daysListBool={days.includes(0)}>D</StyledDay>
+                <StyledDay daysListBool={days.includes(1)}>S</StyledDay>
+                <StyledDay daysListBool={days.includes(2)}>T</StyledDay>
+                <StyledDay daysListBool={days.includes(3)}>Q</StyledDay>
+                <StyledDay daysListBool={days.includes(4)}>Q</StyledDay>
+                <StyledDay daysListBool={days.includes(5)}>S</StyledDay>
+                <StyledDay daysListBool={days.includes(6)}>S</StyledDay>
+            </StyledWeekDays>
         </StyledCreatedHabit>
     )
 }
@@ -19,14 +31,20 @@ const StyledCreatedHabit = styled.li`
     padding: 15px;
     margin: 18px 0 0 0;
     border-radius: 5px;
+    word-wrap: break-word;
     div{
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
         font-size: 20px;
         color: #666666;
+        word-wrap: break-word;
+        h1{
+            width: 90%;
+            /* background-color: blue; */
+        }
     }
 `

@@ -7,12 +7,11 @@ import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios"
 
 
-export default function Creating({ setNewHabit }) {
-    const [inputHabit, setInputHabit] = useState('')
-    const [daysList, setDaysList] = useState([])
+export default function Creating(props) {
+    const{inputHabit,setInputHabit,daysList,setDaysList,setNewHabit, cHabit, setCHabit } = props
     const [loading, setLoading] = useState(false)
     const { token } = useProviders()
-    
+
     function sendHabit() {
 
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
@@ -25,12 +24,21 @@ export default function Creating({ setNewHabit }) {
             setLoading(true)
             const body = {
                 name: inputHabit,
-                days:daysList
+                days: daysList
             }
-            const promisse = axios.post(URL,body,config)
-            promisse.then(res=>{console.log(res);setNewHabit(false)})
-            promisse.catch(err=>console.log(err.response))
-        }
+            const promisse = axios.post(URL, body, config)
+            promisse.then(res => {
+                console.log(res)
+                setLoading(false)
+                setNewHabit(false)
+                setCHabit(!cHabit)
+                setInputHabit('')
+                setDaysList([])
+            })
+            promisse.catch(err => {console.log(err.response);setLoading(true)})
+        }else(
+            alert('Preecha os dados corretamente!')
+        )
     }
     return (
         <StyledCreating>
@@ -38,11 +46,12 @@ export default function Creating({ setNewHabit }) {
                 onChange={(e) => setInputHabit(e.target.value)}
                 value={inputHabit}
                 placeholder="nome do hábito"
+                disabled={loading}
             />
-            <CreateWeekDays setDaysList={setDaysList} daysList={daysList} />
+            <CreateWeekDays setDaysList={setDaysList} daysList={daysList} loading={loading}/>
             <div>
-                <CancelButton onClick={()=>setNewHabit(false)}>Cancelar</CancelButton>
-                <SaveButton onClick={sendHabit}>
+                <CancelButton onClick={() => setNewHabit(false)}>Cancelar</CancelButton>
+                <SaveButton onClick={sendHabit} disabled={loading}>
                     {loading
                         ?
                         <ThreeDots

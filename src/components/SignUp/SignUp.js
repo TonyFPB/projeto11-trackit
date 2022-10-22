@@ -1,6 +1,6 @@
 import { StyledSign } from "../Assets/Styles/Styles";
 import Logo from '../Assets/Logo.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import FormsSignUp from "./FormsSignUp";
 import { useState } from "react";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function SignUp() {
     const [status, setStatus] = useState('')
     const [statusColor, setStatusColor] = useState('')
     const [loading, setLoading] = useState(false)
-    
+    const navigate = useNavigate()
     function inputController(idInput, valueInput) {
         switch (idInput) {
             case "email":
@@ -52,6 +52,7 @@ export default function SignUp() {
                 setLoading(false)
                 setStatus('Usuário cadastrado')
                 setStatusColor('green')
+                navigate('/')
             }
         )
         request.catch(err=>{

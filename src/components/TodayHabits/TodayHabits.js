@@ -48,7 +48,7 @@ export default function TodayHabits() {
 
 const StyledTodayHabits = styled.div`
     height: 100%;
-    margin: 70px 0 70px 0;
+    margin: 100px 0 70px 0;
     padding: 0 20px;
     display: flex;
     flex-direction: column;
