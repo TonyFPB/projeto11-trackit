@@ -1,9 +1,31 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components"
+import useProviders from "../../Providers";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header"
 import Habit from "./Habit";
 
 export default function TodayHabits() {
+    const [habitsList, setHabitsList] = useState([])
+    const { token } = useProviders()
+
+    useEffect(() => {
+        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today'
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        const promisse = axios.get(URL, config)
+
+        promisse.then(res => {
+            console.log(res)
+            setHabitsList(res.data)
+        }
+        )
+        promisse.catch(err => console.log(err.response.data))
+    }, [])
     return (
         <StyledTodayHabits>
             <Header />
@@ -12,15 +34,12 @@ export default function TodayHabits() {
                 <p>Nenhum hábito concluído ainda</p>
             </DayInfo>
             <ul>
-                <Habit />
-                <Habit />
-                <Habit/>
-                <Habit/>
-                <Habit/>
-                <Habit/>
-                <Habit/>
-                <Habit/>
-                <Habit/>
+                {habitsList
+                    ?
+                    habitsList.map((h) => <Habit />)
+                    :
+                    <h1>Nenhum habito ainda</h1>
+                }
             </ul>
             <Footer />
         </StyledTodayHabits>

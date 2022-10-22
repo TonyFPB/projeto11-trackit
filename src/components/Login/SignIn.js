@@ -5,13 +5,15 @@ import FormsSignIn from './FormsSignIn'
 import axios from "axios";
 import { useState } from 'react';
 import styled from 'styled-components';
+import useProviders from '../../Providers';
 
-export default function SignIn({ setToken }) {
+export default function SignIn() {
     const navigate = useNavigate()
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [status, setStatus] = useState(false)
     const [loading,setLoading] = useState(false)
+    const {setToken, setUserImage} = useProviders()
 
     function loggingOn(e) {
         e.preventDefault();
@@ -26,6 +28,7 @@ export default function SignIn({ setToken }) {
         request.then(res => {
             setLoading(false)
             setToken(res.data.token)
+            setUserImage(res.data.image)
             console.log(res.data)
             navigate('/hoje');
             }
