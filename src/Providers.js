@@ -7,7 +7,7 @@ export function Providers({ children }) {
     const [userImage, setUserImage] = useState(undefined)
     const [token, setToken] = useState(undefined)
     const [percentProgress, setPercentProgress] = useState(0)
-    // const [trackProgress, setTrackProgress]
+    const [trackProgress, setTrackProgress] = useState([])
     return (
         <UserContext.Provider
             value={
@@ -17,7 +17,9 @@ export function Providers({ children }) {
                     token,
                     setToken,
                     percentProgress,
-                    setPercentProgress
+                    setPercentProgress,
+                    trackProgress,
+                    setTrackProgress
                 }}>
             {children}
         </UserContext.Provider>

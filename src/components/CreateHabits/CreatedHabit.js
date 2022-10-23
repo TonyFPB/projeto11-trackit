@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import { StyledDay, StyledWeekDays } from "./CreateWeekDays"
 import { BsTrash } from "react-icons/bs"
-import useProviders from "../../Providers"
-import axios from "axios"
+
 
 export default function CreatedHabit({habit,deleteHabit}) {
     const {id,name,days} = habit
@@ -10,8 +9,8 @@ export default function CreatedHabit({habit,deleteHabit}) {
     return (
         <StyledCreatedHabit>
             <div>
-                <h1>{name}</h1>
-                <BsTrash onClick={()=>deleteHabit(id)}/>
+                <h1 data-identifier="habit-name">{name}</h1>
+                <BsTrash data-identifier="delete-habit-btn" onClick={()=>deleteHabit(id)}/>
             </div>
             <StyledWeekDays>
                 <StyledDay daysListBool={days.includes(0)}>D</StyledDay>

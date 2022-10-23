@@ -15,7 +15,7 @@ export default function CreateHabits() {
     const [daysList, setDaysList] = useState([])
     const [dHabit, setDhabit] = useState(false)
     const [cHabit, setCHabit] = useState(false)
-    const { token } = useProviders()
+    const { token, trackProgress,setTrackProgress,setPercentProgress } = useProviders()
 
     function deleteHabit(idDeleteHabit) {
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${idDeleteHabit}`
@@ -28,8 +28,18 @@ export default function CreateHabits() {
         if (window.confirm('Tem certeza que deseja deletar?')) {
             const promisse = axios.delete(URL, config)
             promisse.then(res => {
+                trackProgress.forEach((h) => {
+                    if(idDeleteHabit === h.id){
+                        const newTrack = trackProgress.filter((hab)=> hab.id !==idDeleteHabit)
+                        const total = newTrack.length
+                        const doneHabits = newTrack.filter((hab)=>hab.done).length
+                        const newProgress = (doneHabits/total)*100
+                        setPercentProgress(newProgress)
+                        setTrackProgress(newTrack)
+                    }
+                });
                 setDhabit(!dHabit)
-                
+                //nao manda nada no data
             })
             promisse.catch(err => err.response)
         }
@@ -45,7 +55,7 @@ export default function CreateHabits() {
         }
 
         const promisse = axios.get(URL, config)
-        promisse.then(res => { console.log(res); setHabits(res.data) })
+        promisse.then(res => { setHabits(res.data) })
         promisse.catch(err => console.log(err.response))
     }, [cHabit, dHabit])
 
@@ -54,7 +64,7 @@ export default function CreateHabits() {
             <Header />
             <MyHabits>
                 <h1>Meus Hábitos</h1>
-                <BsPlusSquareFill onClick={() => setNewHabit(true)} color="#52B6FF" size="40px"></BsPlusSquareFill>
+                <BsPlusSquareFill data-identifier="create-habit-btn" onClick={() => setNewHabit(true)} color="#52B6FF" size="40px"></BsPlusSquareFill>
             </MyHabits>
             {newHabit && <Creating
                 daysList={daysList}
@@ -69,7 +79,7 @@ export default function CreateHabits() {
                     ?
                     habits.map((h) => <CreatedHabit key={h.id} habit={h} deleteHabit={deleteHabit} />)
                     :
-                    <EmptyHabits>
+                    <EmptyHabits data-identifier="no-habit-message">
                         Você não tem nenhum hábito cadastrado ainda.Adicione um hábito para começar a trackear!
                     </EmptyHabits >
                 }

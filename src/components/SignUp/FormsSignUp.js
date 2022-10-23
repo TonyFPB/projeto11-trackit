@@ -1,11 +1,12 @@
 import { ThreeDots } from "react-loader-spinner";
 import { StyledFormsSign } from "../Assets/Styles/Styles";
 export default function FormsSignUp(props) {
-    const { registering,inputController, email, password, name, image,loading } = props
+    const { registering, inputController, email, password, name, image, loading } = props
 
     return (
         <StyledFormsSign onSubmit={registering}>
             <input
+                data-identifier="input-email"
                 onChange={inputController}
                 value={email}
                 id="email"
@@ -14,6 +15,7 @@ export default function FormsSignUp(props) {
                 required
             />
             <input
+            data-identifier="input-password"
                 onChange={inputController}
                 value={password}
                 id="password"
@@ -22,6 +24,7 @@ export default function FormsSignUp(props) {
                 required
             />
             <input
+            data-identifier="input-name"
                 onChange={inputController}
                 value={name}
                 id="name"
@@ -30,6 +33,7 @@ export default function FormsSignUp(props) {
                 required
             />
             <input
+             data-identifier="input-photo"
                 onChange={inputController}
                 value={image}
                 id="image"
@@ -39,19 +43,19 @@ export default function FormsSignUp(props) {
             />
 
             <button disabled={loading} type='submit'>
-                {loading?
+                {loading ?
                     <ThreeDots
-                    height="40"
-                    width="40"
-                    radius="9"
-                    color="#FFFFFF"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{}}
-                    wrapperClassName=""
-                    visible={true}
-                />
-                :
-                "Cadastrar"
+                        height="40"
+                        width="40"
+                        radius="9"
+                        color="#FFFFFF"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                    :
+                    "Cadastrar"
                 }
             </button>
         </StyledFormsSign>

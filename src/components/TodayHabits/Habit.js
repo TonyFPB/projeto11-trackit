@@ -15,19 +15,19 @@ export default function Habit({ habit, setMakingHabit, markingHabit}) {
         if (done) {
             const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
             const request = axios.post(URL, {}, config)
-            request.then(res => { console.log(res); setMakingHabit(!markingHabit)})
+            request.then(res => { setMakingHabit(!markingHabit)})
             request.catch(err => console.log(err.response))
 
         }
         if (!done) {
             const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
             const request = axios.post(URL, {}, config)
-            request.then(res => { console.log(res); setMakingHabit(!markingHabit) })
+            request.then(res => { setMakingHabit(!markingHabit) })
             request.catch(err => console.log(err.response))
         }
     }
     return (
-        <StyledHabit>
+        <StyledHabit data-identifier="today-infos">
             <div>
                 <h2>{name}</h2>
                 <p>
@@ -37,7 +37,7 @@ export default function Habit({ habit, setMakingHabit, markingHabit}) {
                 </p>
 
             </div>
-            <IoIosCheckbox onClick={markHabit} size={"100px"} color={done ? "#8FC549" : "#EBEBEB"} />
+            <IoIosCheckbox data-identifier="done-habit-btn" onClick={markHabit} size={"100px"} color={done ? "#8FC549" : "#EBEBEB"} />
         </StyledHabit>
     )
 }

@@ -81,7 +81,7 @@ export default function SignUp() {
             />
             
             {status && <StatusRequest fontColor={statusColor}>{status}</StatusRequest>}
-            <Link to="/">Já é cadastrado? Faça o login!</Link>
+            <Link data-identifier="back-to-login-action" to="/">Já é cadastrado? Faça o login!</Link>
         </StyledSign>
     )
 }

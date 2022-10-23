@@ -5,12 +5,13 @@ import useProviders from "../../Providers"
 import CreateWeekDays from "./CreateWeekDays"
 import { ThreeDots } from 'react-loader-spinner'
 import axios from "axios"
+import dayjs from "dayjs"
 
 
 export default function Creating(props) {
-    const{inputHabit,setInputHabit,daysList,setDaysList,setNewHabit, cHabit, setCHabit } = props
+    const { inputHabit, setInputHabit, daysList, setDaysList, setNewHabit, cHabit, setCHabit } = props
     const [loading, setLoading] = useState(false)
-    const { token } = useProviders()
+    const { token, trackProgress, setTrackProgress, setPercentProgress } = useProviders()
 
     function sendHabit() {
 
@@ -28,30 +29,39 @@ export default function Creating(props) {
             }
             const promisse = axios.post(URL, body, config)
             promisse.then(res => {
-                console.log(res)
+                if (daysList.includes(dayjs().day())) {
+                    const newTrack = [...trackProgress,{id:res.data.id,done:false}]
+                    const total = newTrack.length
+                    const doneHabits = newTrack.filter((hab)=>hab.done).length
+                    const newProgress = (doneHabits/total)*100
+                    setPercentProgress(newProgress)
+                    setTrackProgress(newTrack)
+                }
+
                 setLoading(false)
                 setNewHabit(false)
                 setCHabit(!cHabit)
                 setInputHabit('')
                 setDaysList([])
             })
-            promisse.catch(err => {console.log(err.response);setLoading(true)})
-        }else(
+            promisse.catch(err => { console.log(err.response); setLoading(true) })
+        } else (
             alert('Preecha os dados corretamente!')
         )
     }
     return (
         <StyledCreating>
             <input
+                data-identifier="input-habit-name"
                 onChange={(e) => setInputHabit(e.target.value)}
                 value={inputHabit}
                 placeholder="nome do hábito"
                 disabled={loading}
             />
-            <CreateWeekDays setDaysList={setDaysList} daysList={daysList} loading={loading}/>
+            <CreateWeekDays setDaysList={setDaysList} daysList={daysList} loading={loading} />
             <div>
-                <CancelButton onClick={() => setNewHabit(false)}>Cancelar</CancelButton>
-                <SaveButton onClick={sendHabit} disabled={loading}>
+                <CancelButton data-identifier="cancel-habit-create-btn" onClick={() => setNewHabit(false)}>Cancelar</CancelButton>
+                <SaveButton data-identifier="save-habit-create-btn" onClick={sendHabit} disabled={loading}>
                     {loading
                         ?
                         <ThreeDots

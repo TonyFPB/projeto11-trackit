@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export default function CreateWeekDays({ setDaysList, daysList, loading }) {
-    console.log(daysList)
+
     function selectDays(day) {
         if (!loading) {
             if (daysList.includes(day)) {
@@ -19,13 +19,13 @@ export default function CreateWeekDays({ setDaysList, daysList, loading }) {
     }
     return (
         <StyledWeekDays>
-            <StyledDay onClick={() => selectDays(0)} daysListBool={daysList.includes(0)}>D</StyledDay>
-            <StyledDay onClick={() => selectDays(1)} daysListBool={daysList.includes(1)}>S</StyledDay>
-            <StyledDay onClick={() => selectDays(2)} daysListBool={daysList.includes(2)}>T</StyledDay>
-            <StyledDay onClick={() => selectDays(3)} daysListBool={daysList.includes(3)}>Q</StyledDay>
-            <StyledDay onClick={() => selectDays(4)} daysListBool={daysList.includes(4)}>Q</StyledDay>
-            <StyledDay onClick={() => selectDays(5)} daysListBool={daysList.includes(5)}>S</StyledDay>
-            <StyledDay onClick={() => selectDays(6)} daysListBool={daysList.includes(6)}>S</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(0)} daysListBool={daysList.includes(0)}>D</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(1)} daysListBool={daysList.includes(1)}>S</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(2)} daysListBool={daysList.includes(2)}>T</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(3)} daysListBool={daysList.includes(3)}>Q</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(4)} daysListBool={daysList.includes(4)}>Q</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(5)} daysListBool={daysList.includes(5)}>S</StyledDay>
+            <StyledDay data-identifier="week-day-btn" onClick={() => selectDays(6)} daysListBool={daysList.includes(6)}>S</StyledDay>
         </StyledWeekDays>
     )
 }

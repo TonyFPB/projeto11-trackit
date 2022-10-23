@@ -11,7 +11,7 @@ export default function TodayHabits() {
     const [habitsList, setHabitsList] = useState([])
     const [date, setDate] = useState('')
     const [markingHabit, setMakingHabit] = useState(false)
-    const { token, setPercentProgress,percentProgress} = useProviders()
+    const { token, setPercentProgress,percentProgress,setTrackProgress} = useProviders()
 
     function showDate() {
         const week = { 0: 'Domingo', 1: 'Segunda', 2: 'Terça', 3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado' }
@@ -31,9 +31,9 @@ export default function TodayHabits() {
         const promisse = axios.get(URL, config)
 
         promisse.then(res => {
-            console.log(res)
             showDate()
             setHabitsList(res.data)
+            setTrackProgress(res.data.map((h)=>{return {id:h.id,done:h.done}}))
             setPercentProgress((res.data.filter((h) => h.done).length/res.data.length)*100)
         }
         )
