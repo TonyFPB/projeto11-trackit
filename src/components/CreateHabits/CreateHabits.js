@@ -17,17 +17,20 @@ export default function CreateHabits() {
     const [cHabit, setCHabit] = useState(false)
     const { token } = useProviders()
 
-    function deleteHabit(idHabit) {
-        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${idHabit}`
+    function deleteHabit(idDeleteHabit) {
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${idDeleteHabit}`
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
-        
+
         if (window.confirm('Tem certeza que deseja deletar?')) {
             const promisse = axios.delete(URL, config)
-            promisse.then(res => setDhabit(!dHabit))
+            promisse.then(res => {
+                setDhabit(!dHabit)
+                
+            })
             promisse.catch(err => err.response)
         }
     }

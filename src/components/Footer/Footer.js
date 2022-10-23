@@ -2,8 +2,10 @@ import styled from "styled-components"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
+import useProviders from "../../Providers";
 
 export default function Footer() {
+    const { percentProgress } = useProviders()
     return (
         <StyledFooter>
             <Link to={'/habitos'}>
@@ -12,7 +14,7 @@ export default function Footer() {
             <Link to={'/hoje'}>
                 <StyledProgressBar>
                     <CircularProgressbar
-                        value={50}
+                        value={percentProgress}
                         text={`Hoje`}
                         background
                         backgroundPadding={6}
@@ -31,7 +33,9 @@ export default function Footer() {
                     />
                 </StyledProgressBar>
             </Link>
-            <h1>Histórico</h1>
+            <Link to={"/historico"}>
+                <h1>Histórico</h1>
+            </Link>
         </StyledFooter>
     )
 }

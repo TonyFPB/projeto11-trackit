@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import useProviders from "../../Providers";
@@ -8,8 +9,18 @@ import Habit from "./Habit";
 
 export default function TodayHabits() {
     const [habitsList, setHabitsList] = useState([])
-    const { token } = useProviders()
+    const [date, setDate] = useState('')
+    const [markingHabit, setMakingHabit] = useState(false)
+    const { token, setPercentProgress,percentProgress} = useProviders()
 
+    function showDate() {
+        const week = { 0: 'Domingo', 1: 'Segunda', 2: 'Terça', 3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado' }
+        const d = dayjs()
+        const weekDay = d.day()
+        const day = d.date()
+        const month = d.month() + 1
+        setDate(`${week[weekDay]}, ${day}/${month}`)
+    }
     useEffect(() => {
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today'
         const config = {
@@ -21,27 +32,30 @@ export default function TodayHabits() {
 
         promisse.then(res => {
             console.log(res)
+            showDate()
             setHabitsList(res.data)
+            setPercentProgress((res.data.filter((h) => h.done).length/res.data.length)*100)
         }
         )
         promisse.catch(err => console.log(err.response.data))
-    }, [])
+    }, [markingHabit])
+    
     return (
         <StyledTodayHabits>
             <Header />
-            <DayInfo>
-                <h2>Segunda, 17/05</h2>
-                <p>Nenhum hábito concluído ainda</p>
+            <DayInfo habitsDone={percentProgress!==0}>
+                <h2>{date}</h2>
+                <p>{percentProgress!==0? `${percentProgress.toFixed(0).replace('.',',')}% dos hábitos concluídos` :"Nenhum hábito concluído ainda"}</p>
             </DayInfo>
             <ul>
                 {habitsList
                     ?
-                    habitsList.map((h) => <Habit />)
+                    habitsList.map((h) => <Habit key={h.id} habit={h} setMakingHabit={setMakingHabit} markingHabit={markingHabit} />)
                     :
                     <h1>Nenhum habito ainda</h1>
                 }
             </ul>
-            <Footer />
+            <Footer habitsList={habitsList} />
         </StyledTodayHabits>
     )
 }
@@ -52,8 +66,6 @@ const StyledTodayHabits = styled.div`
     padding: 0 20px;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    
 `
 const DayInfo = styled.div`
     margin: 28px 0 ;
@@ -67,6 +79,6 @@ const DayInfo = styled.div`
         font-style: normal;
         font-weight: 400;
         font-size: 17.976px;    
-        color: #BABABA; /*varia para color: #8FC549;*/
+        color: ${props=>props.habitsDone?'#8FC549':"#BABABA"}; /*varia para color: #8FC549;*/
     }
 `
