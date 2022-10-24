@@ -37,7 +37,12 @@ export default function CreateHabits() {
                         const total = newTrack.length
                         const doneHabits = newTrack.filter((hab) => hab.done).length
                         const newProgress = (doneHabits / total) * 100
-                        setPercentProgress(newProgress)
+                        if (!isNaN(newProgress)) {
+                            setPercentProgress(newProgress)
+                        }
+                        if(isNaN(newProgress)){
+                            setPercentProgress(0)
+                        }
                         setTrackProgress(newTrack)
                     }
                 });

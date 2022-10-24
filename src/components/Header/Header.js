@@ -1,14 +1,15 @@
 import styled from "styled-components"
 import useProviders from "../../Providers"
-
+import UserImageQuestion from "../Assets/Images/userQuestionMark.jpg"
 
 export default function Header() {
-    const { userImage } = useProviders()
+    const { userImage,token} = useProviders()
+
 
     return (
         <StyledHeader>
             <h1>TrackIt</h1>
-            <img data-identifier="avatar" src={userImage} alt='Imagem de perfil' />
+            <img data-identifier="avatar" src={(token === undefined)?UserImageQuestion: userImage} alt='Imagem de perfil' />
         </StyledHeader>
     )
 }
