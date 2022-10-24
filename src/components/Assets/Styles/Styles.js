@@ -53,3 +53,27 @@ export const StyledSign= styled.div`
         color: #52B6FF;
     }
 `
+export const StyledNotLoggedIn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    border: 2px dashed #666666;
+    border-radius: 5px;
+    h1{
+        font-size: 20px;
+        margin-bottom: 30px;
+        font-family: 'Lexend Deca';
+        color: #126BA5;
+    }
+    button{
+        height: 50px;
+        border-radius:5px;
+        border-style: none;
+        background-color: #52B6FF;
+        color: #FFFFFF;
+        font-size: 20px;
+        font-family: 'Lexend Deca';
+    }
+`

@@ -3,8 +3,8 @@ import useProviders from "../../Providers"
 
 
 export default function Header() {
-    const {userImage} = useProviders()
-    
+    const { userImage } = useProviders()
+
     return (
         <StyledHeader>
             <h1>TrackIt</h1>

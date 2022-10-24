@@ -1,17 +1,20 @@
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import useProviders from "../../Providers";
+import { StyledNotLoggedIn } from "../Assets/Styles/Styles";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header"
 import Habit from "./Habit";
 
 export default function TodayHabits() {
+    const navigate = useNavigate()
     const [habitsList, setHabitsList] = useState([])
     const [date, setDate] = useState('')
     const [markingHabit, setMakingHabit] = useState(false)
-    const { token, setPercentProgress,percentProgress,setTrackProgress} = useProviders()
+    const { token, setPercentProgress, percentProgress, setTrackProgress } = useProviders()
 
     function showDate() {
         const week = { 0: 'Domingo', 1: 'Segunda', 2: 'Terça', 3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado' }
@@ -21,6 +24,7 @@ export default function TodayHabits() {
         const month = d.month() + 1
         setDate(`${week[weekDay]}, ${day}/${month}`)
     }
+
     useEffect(() => {
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today'
         const config = {
@@ -28,24 +32,43 @@ export default function TodayHabits() {
                 "Authorization": `Bearer ${token}`
             }
         }
-        const promisse = axios.get(URL, config)
+        if (token !== undefined) {
+            const promisse = axios.get(URL, config)
 
-        promisse.then(res => {
-            showDate()
-            setHabitsList(res.data)
-            setTrackProgress(res.data.map((h)=>{return {id:h.id,done:h.done}}))
-            setPercentProgress((res.data.filter((h) => h.done).length/res.data.length)*100)
+            promisse.then(res => {
+                showDate()
+                setHabitsList(res.data)
+                setTrackProgress(res.data.map((h) => { return { id: h.id, done: h.done } }))
+                if(isNaN((res.data.filter((h) => h.done).length / res.data.length) * 100)){
+                    setPercentProgress(0)
+                }else{
+                    setPercentProgress((res.data.filter((h) => h.done).length / res.data.length) * 100)
+                }
+            }
+            )
+            promisse.catch(err => console.log(err.response.data))
+
         }
-        )
-        promisse.catch(err => console.log(err.response.data))
+
     }, [markingHabit])
-    
+    if (token === undefined) {
+        return (
+            <StyledTodayHabits>
+                <Header />
+                <StyledNotLoggedIn>
+                    <h1>Você não esta mais logado!</h1>
+                    <button onClick={() => navigate('/')}>Retornar para a tela de login</button>
+                </StyledNotLoggedIn>
+                <Footer />
+            </StyledTodayHabits>
+        )
+    }
     return (
         <StyledTodayHabits>
             <Header />
-            <DayInfo habitsDone={percentProgress!==0}>
+            <DayInfo habitsDone={percentProgress !== 0}>
                 <h2>{date}</h2>
-                <p>{percentProgress!==0? `${percentProgress.toFixed(0).replace('.',',')}% dos hábitos concluídos` :"Nenhum hábito concluído ainda"}</p>
+                <p>{(percentProgress !== 0) ? `${percentProgress.toFixed(0).replace('.', ',')}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</p>
             </DayInfo>
             <ul>
                 {habitsList
@@ -79,6 +102,6 @@ const DayInfo = styled.div`
         font-style: normal;
         font-weight: 400;
         font-size: 17.976px;    
-        color: ${props=>props.habitsDone?'#8FC549':"#BABABA"}; /*varia para color: #8FC549;*/
+        color: ${props => props.habitsDone ? '#8FC549' : "#BABABA"}; /*varia para color: #8FC549;*/
     }
 `

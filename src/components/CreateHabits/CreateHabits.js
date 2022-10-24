@@ -7,15 +7,18 @@ import CreatedHabit from "./CreatedHabit";
 import useProviders from "../../Providers";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { StyledNotLoggedIn } from "../Assets/Styles/Styles";
 
 export default function CreateHabits() {
+    const navigate = useNavigate()
     const [newHabit, setNewHabit] = useState(false)
     const [habits, setHabits] = useState([])
     const [inputHabit, setInputHabit] = useState('')
     const [daysList, setDaysList] = useState([])
     const [dHabit, setDhabit] = useState(false)
     const [cHabit, setCHabit] = useState(false)
-    const { token, trackProgress,setTrackProgress,setPercentProgress } = useProviders()
+    const { token, trackProgress, setTrackProgress, setPercentProgress } = useProviders()
 
     function deleteHabit(idDeleteHabit) {
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${idDeleteHabit}`
@@ -29,11 +32,11 @@ export default function CreateHabits() {
             const promisse = axios.delete(URL, config)
             promisse.then(res => {
                 trackProgress.forEach((h) => {
-                    if(idDeleteHabit === h.id){
-                        const newTrack = trackProgress.filter((hab)=> hab.id !==idDeleteHabit)
+                    if (idDeleteHabit === h.id) {
+                        const newTrack = trackProgress.filter((hab) => hab.id !== idDeleteHabit)
                         const total = newTrack.length
-                        const doneHabits = newTrack.filter((hab)=>hab.done).length
-                        const newProgress = (doneHabits/total)*100
+                        const doneHabits = newTrack.filter((hab) => hab.done).length
+                        const newProgress = (doneHabits / total) * 100
                         setPercentProgress(newProgress)
                         setTrackProgress(newTrack)
                     }
@@ -53,12 +56,26 @@ export default function CreateHabits() {
                 Authorization: `Bearer ${token}`
             }
         }
+        if (token !== undefined) {
+            const promisse = axios.get(URL, config)
+            promisse.then(res => { setHabits(res.data) })
+            promisse.catch(err => console.log(err.response))
+        }
 
-        const promisse = axios.get(URL, config)
-        promisse.then(res => { setHabits(res.data) })
-        promisse.catch(err => console.log(err.response))
     }, [cHabit, dHabit])
 
+    if (token === undefined) {
+        return (
+            <StyledCreateHabits>
+                <Header />
+                <StyledNotLoggedIn>
+                    <h1>Você não esta mais logado!</h1>
+                    <button onClick={() => navigate('/')}>Retornar para a tela de login</button>
+                </StyledNotLoggedIn>
+                <Footer />
+            </StyledCreateHabits>
+        )
+    }
     return (
         <StyledCreateHabits>
             <Header />

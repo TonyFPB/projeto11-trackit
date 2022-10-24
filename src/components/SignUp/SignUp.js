@@ -1,5 +1,5 @@
 import { StyledSign } from "../Assets/Styles/Styles";
-import Logo from '../Assets/Logo.jpg'
+import Logo from '../Assets/Images/Logo.jpg'
 import { Link, useNavigate } from 'react-router-dom'
 import FormsSignUp from "./FormsSignUp";
 import { useState } from "react";

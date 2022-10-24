@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
-import Logo from '../Assets/Logo.jpg'
+import Logo from '../Assets/Images/Logo.jpg'
+import UserBaseImage from '../Assets/Images/user.jpg'
 import { StyledSign } from "../Assets/Styles/Styles"
 import FormsSignIn from './FormsSignIn'
 import axios from "axios";
@@ -12,8 +13,8 @@ export default function SignIn() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [status, setStatus] = useState(false)
-    const [loading,setLoading] = useState(false)
-    const {setToken, setUserImage} = useProviders()
+    const [loading, setLoading] = useState(false)
+    const { setToken, setUserImage } = useProviders()
 
     function loggingOn(e) {
         e.preventDefault();
@@ -28,12 +29,14 @@ export default function SignIn() {
         request.then(res => {
             setLoading(false)
             setToken(res.data.token)
-            setUserImage(res.data.image)
-            console.log(res.data)
+            let img = new Image()
+            img.src = res.data.image
+            img.onload = () => setUserImage(res.data.image)
+            img.onerror = () => setUserImage(UserBaseImage)
             navigate('/hoje');
-            }
+        }
         )
-        request.catch(err=>{
+        request.catch(err => {
             setLoading(false)
             setStatus(true)
         })
